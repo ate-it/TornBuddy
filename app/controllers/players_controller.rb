@@ -9,10 +9,9 @@ class PlayersController < ApplicationController
     # TODO: Create account and loging
 
     else
-      # TODO: Return error to user and redirect to new
+      redirect_to action: "new", flash: { error: response["error"]["error"] }
     end
   end
-
 
   def new
     # TODO: if player is logged in, redirect to dashboard
