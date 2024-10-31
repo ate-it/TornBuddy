@@ -9,7 +9,8 @@ class PlayersController < ApplicationController
     # TODO: Create account and loging
 
     else
-      redirect_to action: "new", flash: { error: response["error"]["error"] }
+      flash[:message] = response["error"]["error"]
+      redirect_to action: "new"
     end
   end
 

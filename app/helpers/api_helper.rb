@@ -6,9 +6,10 @@ module ApiHelper
     when 1
       base_url = "https://api.torn.com/"
     end
-    call_string = base_url+section="?key="+key
-    response = HTTParty.get(call_string)
 
-    JSON.parse(response.body)
+      call_string = base_url+section="?key="+key
+      response = Faraday.get(call_string)
+
+      JSON.parse(response.body)
   end
 end
