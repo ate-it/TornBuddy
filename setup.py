@@ -13,5 +13,8 @@ r = os.system(cmd)
 cmd = "python manage.py migrate"
 r = os.system(cmd)
 
+cmd = "npx tailwindcss -i ./static/src/input.css -o ./static/src/output.css"
+r = os.system(cmd)
+
 print("create superuser")
 User.objects.create_superuser("admin", "admin@example.com", "adminpass")

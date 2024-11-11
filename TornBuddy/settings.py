@@ -26,7 +26,11 @@ SECRET_KEY = "django-insecure-o=v5-2==ib&sk&l$cc)@q5g_*%t@8#966#*sldy+$r+qv@+=4r
 DEBUG = True
 
 ALLOWED_HOSTS = []
+COMPRESS_ROOT = BASE_DIR / "static"
 
+COMPRESS_ENABLED = True
+
+STATICFILES_FINDERS = ("compressor.finders.CompressorFinder",)
 
 # Application definition
 
@@ -38,7 +42,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django_extensions",
-    "dashboard.apps.DashboardConfig",
+    "compressor",
 ]
 
 MIDDLEWARE = [
@@ -56,7 +60,7 @@ ROOT_URLCONF = "TornBuddy.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [BASE_DIR / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
