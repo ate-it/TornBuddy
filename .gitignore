@@ -135,4 +135,6 @@ GitHub.sublime-settings
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
-.historynode_modules/
+.history
+
+node_modules/
