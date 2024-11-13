@@ -28,9 +28,6 @@ SECRET_KEY = "django-insecure-o=v5-2==ib&sk&l$cc)@q5g_*%t@8#966#*sldy+$r+qv@+=4r
 DEBUG = True
 
 ALLOWED_HOSTS = []
-COMPRESS_ROOT = BASE_DIR / "static"
-
-COMPRESS_ENABLED = True
 
 
 def get_cache():
@@ -62,7 +59,7 @@ def get_cache():
 
 
 CACHES = get_cache()
-STATICFILES_FINDERS = ("compressor.finders.CompressorFinder",)
+
 
 # Application definition
 
@@ -74,7 +71,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django_extensions",
-    "compressor",
+    "bootstrap5",
     "loot.apps.LootConfig",
 ]
 
