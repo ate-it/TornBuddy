@@ -32,6 +32,36 @@ COMPRESS_ROOT = BASE_DIR / "static"
 
 COMPRESS_ENABLED = True
 
+
+def get_cache():
+    pass
+
+    if config("USE_REDIS", default=False, cast=bool):
+        print(" settings CACHE=redis")
+
+        return {
+            "default": {
+                "BACKEND": "django_redis.cache.RedisCache",
+                "LOCATION": config("REDIS_HOST"),
+                "OPTIONS": {
+                    "CLIENT_CLASS": "django_redis.client.DefaultClient",
+                    "PASSWORD": config("REDIS_PASSWORD"),
+                },
+            }
+        }
+
+    else:
+        print("[ settings CACHE=DB")
+
+        return {
+            "default": {
+                "BACKEND": "django.core.cache.backends.db.DatabaseCache",
+                "LOCATION": "cache",
+            }
+        }
+
+
+CACHES = get_cache()
 STATICFILES_FINDERS = ("compressor.finders.CompressorFinder",)
 
 # Application definition
@@ -45,6 +75,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django_extensions",
     "compressor",
+    "loot.apps.LootConfig",
 ]
 
 MIDDLEWARE = [
