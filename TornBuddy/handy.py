@@ -1,3 +1,5 @@
+from datetime import datetime
+
 import requests
 from django.core.cache import cache
 
@@ -112,6 +114,10 @@ def apiCall(
                 return rjson
 
     return apiCallError(err)
+
+
+def timestampToDatetime(t):
+    return datetime.fromtimestamp(t)
 
 
 def romanToInt(s):

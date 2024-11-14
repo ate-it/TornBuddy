@@ -1,6 +1,7 @@
 {% extends "_base.html" %}
 {% load static %}
 
+
 {% block content %}
   <h1 class="text-3xl text-green-800">Django + Tailwind CSS + Flowbite</h1>
 
@@ -12,9 +13,10 @@
   <div class="card" style="width: 18rem;">
     <img src="{% static 'npc/' %}{{npc.name}}.png" class="card-img-top" alt="...">
     <div class="card-body">
-      <h5 class="card-title">{{npc.name}}</h5>
+      <h5 class="card-title">{{npc.name}} - {{npc.status}}</h5>
       <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
       <a href="#" class="btn btn-primary">Go somewhere</a>
+      <p>Last Update: {{ npc.last_update_datetime}}</p>
     </div>
   </div>
 
