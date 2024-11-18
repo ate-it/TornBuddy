@@ -1,26 +1,18 @@
-{% extends "_base.html" %}
+{% extends '_base.html' %}
 {% load static %}
-
 
 {% block content %}
   <h1 class="text-3xl text-green-800">Django + Tailwind CSS + Flowbite</h1>
 
   {% for npc in NPCs %}
-
-
-
-
-  <div class="card" style="width: 18rem;">
-    <img src="{% static 'npc/' %}{{npc.name}}.png" class="card-img-top" alt="...">
-    <div class="card-body">
-      <h5 class="card-title">{{npc.name}} - {{npc.status}}</h5>
-      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-      <a href="#" class="btn btn-primary">Go somewhere</a>
-      <p>Last Update: {{ npc.last_update_datetime}}</p>
+    <div class="card" style="width: 18rem;">
+      <img src="{% static 'npc/' %}{{ npc.name }}.png" class="card-img-top" alt="..." />
+      <div class="card-body">
+        <h5 class="card-title">{{ npc.name }} - {{ npc.status|capfirst }}</h5>
+        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+        <a id="attack{{ npc.torn_id }}" target="_blank" href="https://www.torn.com/loader2.php?sid=getInAttack&user2ID={{ npc.torn_id }}" class="btn btn-primary">Attack</a>
+        <p>Last Update: {{ npc.last_update_datetime }}</p>
+      </div>
     </div>
-  </div>
-
-
   {% endfor %}
-
-{% endblock content %}
+{% endblock %}
