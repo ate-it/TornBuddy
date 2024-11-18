@@ -15,7 +15,7 @@ class NPC(models.Model):
 
     def last_update_datetime(self):
 
-        return timestampToDatetime(self.last_hospital).strftime("%m/%d/%Y, %H:%M:%S")
+        return timestampToDatetime(self.last_update).strftime("%d/%m/%Y, %H:%M:%S")
 
     def update(self):
 

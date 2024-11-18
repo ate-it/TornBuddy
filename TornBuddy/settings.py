@@ -125,7 +125,7 @@ DATABASES = {
         "PORT": config("DB_PORT"),
     }
 }
-
+CELERY_BROKER_URL = config("CELERY_BROKER_URL")
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
