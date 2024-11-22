@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 
+from celery.schedules import crontab
+from decouple import config
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -26,11 +29,38 @@ SECRET_KEY = "django-insecure-o=v5-2==ib&sk&l$cc)@q5g_*%t@8#966#*sldy+$r+qv@+=4r
 DEBUG = True
 
 ALLOWED_HOSTS = []
-COMPRESS_ROOT = BASE_DIR / "static"
 
-COMPRESS_ENABLED = True
 
-STATICFILES_FINDERS = ("compressor.finders.CompressorFinder",)
+def get_cache():
+    pass
+
+    if config("USE_REDIS", default=False, cast=bool):
+        print(" settings CACHE=redis")
+
+        return {
+            "default": {
+                "BACKEND": "django_redis.cache.RedisCache",
+                "LOCATION": config("REDIS_HOST"),
+                "OPTIONS": {
+                    "CLIENT_CLASS": "django_redis.client.DefaultClient",
+                    "PASSWORD": config("REDIS_PASSWORD"),
+                },
+            }
+        }
+
+    else:
+        print("[ settings CACHE=DB")
+
+        return {
+            "default": {
+                "BACKEND": "django.core.cache.backends.db.DatabaseCache",
+                "LOCATION": "cache",
+            }
+        }
+
+
+CACHES = get_cache()
+
 
 # Application definition
 
@@ -42,7 +72,8 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django_extensions",
-    "compressor",
+    "loot",
+    "django_celery_beat",
 ]
 
 MIDDLEWARE = [
@@ -82,14 +113,14 @@ WSGI_APPLICATION = "TornBuddy.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": "tornbuddy_py_dev",
-        "USER": "jack",
-        "PASSWORD": "Thomas01453",
-        "HOST": "localhost",
-        "PORT": "5432",
+        "NAME": config("DB_NAME"),
+        "USER": config("DB_USER"),
+        "PASSWORD": config("DB_PASSWORD"),
+        "HOST": config("DB_HOST"),
+        "PORT": config("DB_PORT"),
     }
 }
-
+CELERY_BROKER_URL = config("CELERY_BROKER_URL")
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -122,10 +153,18 @@ USE_I18N = True
 USE_TZ = True
 
 
+CELERY_BEAT_SCHEDULE = {
+    "sample_task": {
+        "task": "loot.tasks.update_loot_npc",
+        "schedule": crontab(minute="*/5"),
+    },
+}
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = "static/"
+STATICFILES_DIRS = [BASE_DIR / "static"]
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
