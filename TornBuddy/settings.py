@@ -72,7 +72,6 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "debug_toolbar",
     "django_extensions",
-    "bootstrap5",
     "loot.apps.LootConfig",
 ]
 INTERNAL_IPS = [
