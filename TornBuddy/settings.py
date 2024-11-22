@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 
+from celery.schedules import crontab
 from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -71,13 +72,10 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django_extensions",
-    "loot.apps.LootConfig",
+    "loot",
+    "django_celery_beat",
 ]
-INTERNAL_IPS = [
-    # ...
-    "127.0.0.1",
-    # ...
-]
+
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -155,6 +153,12 @@ USE_I18N = True
 USE_TZ = True
 
 
+CELERY_BEAT_SCHEDULE = {
+    "sample_task": {
+        "task": "loot.tasks.update_loot_npc",
+        "schedule": crontab(minute="*/5"),
+    },
+}
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
