@@ -25,6 +25,10 @@ docker-compose --env-file .env up  -d
 ```
 git pull
 docker-compose down
+```
+Make any manual changes as required
+
+```
 docker-compose --env-file .env up  -d --build
 docker-compose exec web python manage.py migrate
 docker-compose exec web python manage.py collectstatic --no-input --clear
