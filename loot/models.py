@@ -10,8 +10,8 @@ class NPC(models.Model):
     name = models.CharField(max_length=20, default="?")
     status = models.TextField(max_length=20, default="Ok")
     loot_level = models.IntegerField(default="0")
-    last_hospital = models.IntegerField(null=True)
-    last_update = models.IntegerField(null=True)
+    last_hospital = models.IntegerField(null=True, default=28377016)
+    last_update = models.IntegerField(null=True, default=28377016)
     visible = models.BooleanField(default=False)
 
     def last_update_datetime(self):
