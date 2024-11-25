@@ -2,3 +2,11 @@
 .venv
 .git
 .gitignore
+.env
+**/*.pyc
+**/*.pyo
+**/*.mo
+**/__pycache__/
+Dockerfile
+db.sqlite3
+**/*.md
