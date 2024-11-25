@@ -21,12 +21,12 @@ User.objects.create_superuser("admin", "admin@example.com", "adminpass")
 
 # NPC's
 print("Create NPC's")
-NPC.objects.create(torn_id=4, visible=True)  # Duke
-NPC.objects.create(torn_id=15, visible=True)  # Leslie
-NPC.objects.create(torn_id=10, visible=False)  # Scrooge
-NPC.objects.create(torn_id=19, visible=True)  # Jimmy
-NPC.objects.create(torn_id=20, visible=True)  # Fernando
-NPC.objects.create(torn_id=21, visible=True)  # Tiny
+NPC.objects.create(torn_id=4, name="Duke", visible=True)  # Duke
+NPC.objects.create(torn_id=15, name="Leslie", visible=True)  # Leslie
+NPC.objects.create(torn_id=10, name="Scrooge", visible=False)  # Scrooge
+NPC.objects.create(torn_id=19, name="Jimmy", visible=True)  # Jimmy
+NPC.objects.create(torn_id=20, name="Fernando", visible=True)  # Fernando
+NPC.objects.create(torn_id=21, name="Tiny", visible=True)  # Tiny
 
 print("Debug: Starting Loot Update")
 NPCs = NPC.objects.all()
