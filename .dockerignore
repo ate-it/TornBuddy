@@ -2,7 +2,6 @@
 .venv
 .git
 .gitignore
-.env
 **/*.pyc
 **/*.pyo
 **/*.mo
