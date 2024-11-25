@@ -1,8 +1,16 @@
 # TornBuddy
 
 ## First Run
-postgres_host to compose_pg_service_name
-redis_host to compose_file_service name
+
+```
+git clone https://github.com/ate-it/TornBuddy.git
+cd TornBuddy/
+cp .env.example .env
+```
+
+Update your .env file with production settings
+
+We need to start the containers, run setup scripts, then restart the containers
 
 ```
 docker-compose --env-file .env up  -d --build
@@ -13,7 +21,9 @@ docker-compose --env-file .env up  -d
 ```
 
 ## Updates
+
 ```
+git pull
 docker-compose down
 docker-compose --env-file .env up  -d --build
 docker-compose exec wev python manage.py migrate
