@@ -30,7 +30,7 @@ SECRET_KEY = config("SECRET_KEY")
 DEBUG = config("DEBUG", default=False, cast=bool)
 
 ALLOWED_HOSTS = ["*"]
-CSRF_TRUSTED_ORIGINS = ["http://10.0.0.107:1337"]
+CSRF_TRUSTED_ORIGINS = ["https://tornbuddy.com", "http://10.0.0.107:1337"]
 
 
 sentry_sdk.init(
