@@ -27,3 +27,9 @@ NPC.objects.create(torn_id=10, visible=False)  # Scrooge
 NPC.objects.create(torn_id=19, visible=True)  # Jimmy
 NPC.objects.create(torn_id=20, visible=True)  # Fernando
 NPC.objects.create(torn_id=21, visible=True)  # Tiny
+
+print("Debug: Starting Loot Update")
+NPCs = NPC.objects.all()
+for npc in NPCs:
+    npc.update()
+print("Debug: Ending Loot Update")
