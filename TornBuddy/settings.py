@@ -170,7 +170,7 @@ USE_TZ = True
 
 
 CELERY_BEAT_SCHEDULE = {
-    "sample_task": {
+    "Update_NPC_Loot": {
         "task": "loot.tasks.update_loot_npc",
         "schedule": crontab(minute="*/5"),
     },
