@@ -91,7 +91,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "loot",
     "api",
-    "rest_framework_swagger",
+    "drf_yasg",
     "django_celery_beat",
 ]
 
