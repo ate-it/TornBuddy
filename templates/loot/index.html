@@ -1,36 +1,41 @@
 {% extends '_base.html' %}
 {% load static %}
 
-
-
 {% block content %}
-
-<div class="row">
-  {% for npc in NPCs %}
-  <div class="col">
-    <div class="card" style="width: 18rem;">
-      <img src="{% static 'npc/npc_' %}{{ npc.torn_id }}.png" class="card-img-top" alt="..." />
-      <div class="card-body">
-        <h5 class="card-title">{{ npc.name }} - {{ npc.status|capfirst }}</h5>
-
-        {% for k, v in npc.lootTimings.items %}
-      {% if forloop.counter0 %}
-      <p class="card-text">
-
-        {% if v.due > 0 %}
-        <b>Loot level {{v.lvl}}:</b> {{v.ts}} TCT<br>
-
-        {% else %}
-         <span class="text-muted"> <b>Loot level {{v.lvl}}</b><br>On {{v.ts}} TCT</span>
-        {% endif %}
-      </p>
-      {% endif %}
-      {% endfor %}
-        <a id="attack{{ npc.torn_id }}" target="_blank" href="https://www.torn.com/loader2.php?sid=getInAttack&user2ID={{ npc.torn_id }}" class="btn btn-primary">Attack</a>
-        <p class="text-muted">Last Update: {{ npc.last_update_datetime }}</p>
+  <style>
+  .card-img-top {
+    width: 100%;
+    height: 10vw;
+    object-fit: contain;
+}
+</style>
+  <div class="row">
+    {% for npc in NPCs %}
+      <div class="col">
+        <div class="card">
+          <img src="{% static 'npc/npc_' %}{{ npc.torn_id }}.png" class="card-img-top" alt="..." />
+          <div class="card-body">
+            <h5 class="card-title">{{ npc.name }} - {{ npc.status|capfirst }}</h5>
+            <p class="card-text">
+              {% for k, v in npc.lootTimings.items %}
+                {% if forloop.counter0 %}
+                  {% if v.due > 0 %}
+                    <b>Loot level {{ v.lvl }}:</b> At {{ v.ts }} TCT<br />
+                  {% else %}
+                    <span class="text-muted"><b>Loot level {{ v.lvl }}:</b>On {{ v.ts }} TCT</span>
+                  {% endif %}
+                {% endif %}
+              {% endfor %}
+              <p class="text-muted">Last Update: {{ npc.last_update_datetime }}</p>
+            </p>
+            {% if npc.in_hospital %}
+              <a id="attack{{ npc.torn_id }}" target="_blank" href="https://www.torn.com/loader2.php?sid=getInAttack&user2ID={{ npc.torn_id }}" class="btn btn-primary disabled">Attack</a>
+            {% else %}
+              <a id="attack{{ npc.torn_id }}" target="_blank" href="https://www.torn.com/loader2.php?sid=getInAttack&user2ID={{ npc.torn_id }}" class="btn btn-primary">Attack</a>
+            {% endif %}
+          </div>
+        </div>
       </div>
-    </div>
+    {% endfor %}
   </div>
-  {% endfor %}
-</div>
 {% endblock %}
