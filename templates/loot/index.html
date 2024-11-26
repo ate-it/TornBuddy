@@ -9,7 +9,7 @@
   {% for npc in NPCs %}
   <div class="col">
     <div class="card" style="width: 18rem;">
-      <img src="{% static 'npc/' %}{{ npc.name }}.png" class="card-img-top" alt="..." />
+      <img src="{% static 'npc/npc_' %}{{ npc.torn_id }}.png" class="card-img-top" alt="..." />
       <div class="card-body">
         <h5 class="card-title">{{ npc.name }} - {{ npc.status|capfirst }}</h5>
 
@@ -21,13 +21,13 @@
         <b>Loot level {{v.lvl}}:</b> {{v.ts}} TCT<br>
 
         {% else %}
-          <b>prev Loot level {{v.lvl}}</b><br>At {{v.ts}} TCT
+         <span class="text-muted"> <b>Loot level {{v.lvl}}</b><br>On {{v.ts}} TCT</span>
         {% endif %}
       </p>
       {% endif %}
       {% endfor %}
         <a id="attack{{ npc.torn_id }}" target="_blank" href="https://www.torn.com/loader2.php?sid=getInAttack&user2ID={{ npc.torn_id }}" class="btn btn-primary">Attack</a>
-        <p>Last Update: {{ npc.last_update_datetime }}</p>
+        <p class="text-muted">Last Update: {{ npc.last_update_datetime }}</p>
       </div>
     </div>
   </div>
