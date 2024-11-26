@@ -20,6 +20,9 @@ class NPC(models.Model):
             timestampToDatetime(self.last_update).strftime("%d/%m/%Y %H:%M:%S") + " TCT"
         )
 
+    def in_hospital(self):
+        return self.status == "hospitalized"
+
     def update(self):
         print(f"DEBUG: Updating loot for {self.name}")
         key = config("MASTER_KEY")
