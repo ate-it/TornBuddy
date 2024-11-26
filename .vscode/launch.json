@@ -4,7 +4,7 @@
     "configurations": [
       {
             "name": "Celery",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
             "module": "celery",
             "console": "integratedTerminal",
@@ -21,7 +21,7 @@
         },
         {
             "name": "Django",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
             "stopOnEntry": false,
             "python": "${workspaceRoot}/venv/bin/python",
