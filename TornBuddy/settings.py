@@ -88,7 +88,9 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django_extensions",
+    "rest_framework",
     "loot",
+    "api",
     "django_celery_beat",
 ]
 
