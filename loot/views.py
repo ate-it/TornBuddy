@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -16,6 +17,14 @@ def index(request):
 
 
 class LootApiView(APIView):
+    """
+    Returns all NPC's with loot timer information
+    """
+
+    @swagger_auto_schema(
+        operation_description="Returns NPC Loot Details",
+        operation_summary="Returns NPC Loot Details",
+    )
     def get(self, request, *args, **kwargs):
         queryset = NPC.objects.all()
         serializer = LootSerializer(instance=queryset, many=True)
