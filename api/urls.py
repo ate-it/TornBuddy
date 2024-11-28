@@ -9,6 +9,7 @@ schema_view = get_schema_view(
     openapi.Info(
         title="TornBuddy API",
         default_version="v1",
+        url="https://tornbuddy.com/api/",
         description="API Endpoints for TornBuddy",
     ),
     public=True,
