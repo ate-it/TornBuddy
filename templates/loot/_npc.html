@@ -1,0 +1,28 @@
+{% load static %}
+
+<div class="column ">
+  <div class="columns">
+    <div class="column">
+      <img src="{% static 'npc/npc_' %}{{ npc.torn_id }}.png"  alt="..." />
+      <h2 class="title">{{ npc.name }} - {{ npc.status|capfirst }}</h2>
+      <small class="text-muted">Last Update: {{ npc.last_update_datetime }}</small>
+
+      {% if npc.in_hospital %}
+        <a id="attack{{ npc.torn_id }}" target="_blank" href="https://www.torn.com/loader2.php?sid=getInAttack&user2ID={{ npc.torn_id }}" class="btn btn-primary disabled">Attack</a>
+      {% else %}
+        <a id="attack{{ npc.torn_id }}" target="_blank" href="https://www.torn.com/loader2.php?sid=getInAttack&user2ID={{ npc.torn_id }}" class="btn btn-primary">Attack</a>
+      {% endif %}
+    </div>
+    <div class="column">
+      {% for k, v in npc.lootTimings.items %}
+        {% if forloop.counter0 %}
+          {% if v.due > 0 %}
+            <b>Loot level {{ v.lvl }}:</b> At {{ v.ts }} TCT
+          {% else %}
+            <span class="text-muted"><b>Loot level {{ v.lvl }}:</b> On {{ v.ts }} TCT</span>
+          {% endif %}
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</div>
