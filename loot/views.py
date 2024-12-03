@@ -5,6 +5,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from loot.models import NPC
+from TornBuddy.handy import get_player
 
 from .serializers import LootSerializer
 
@@ -12,7 +13,8 @@ from .serializers import LootSerializer
 def index(request):
 
     NPCs = NPC.objects.filter(visible=True).order_by("name")
-    context = {"NPCs": NPCs}
+    player = get_player(request=request)
+    context = {"NPCs": NPCs, "player": player}
     return render(request, "loot/index.html", context)
 
 
