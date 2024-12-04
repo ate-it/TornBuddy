@@ -3,6 +3,8 @@ from datetime import datetime
 import requests
 from django.core.cache import cache
 
+from player.models import Player
+
 
 def apiCallError(err):
     return {
@@ -12,6 +14,14 @@ def apiCallError(err):
         "apiErrorString": err["error"]["error"],
         "apiErrorCode": int(err["error"]["code"]),
     }
+
+
+def get_player(request):
+    if "player" in request.session:
+        player = request.session["player"]
+        player = Player.objects.filter(torn_id=player)[0]
+        return player
+    return None
 
 
 def apiCall(

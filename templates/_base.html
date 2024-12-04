@@ -10,6 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TornBuddy</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css" />
+    <script src="{% static 'js/toast.js' %}"></script>
   </head>
 
   <body>
@@ -37,8 +38,11 @@
         <div class="navbar-end">
           <div class="navbar-item">
             <div class="buttons">
-              <a class="button is-primary"><strong>Sign up</strong></a>
-              <a class="button is-light">Log in</a>
+              {% if player %}
+                <a href="/player/logout" class="button is-primary"><strong>Log Out</strong></a>
+              {% else %}
+                <a href="/player/login" class="button is-primary"><strong>Log In</strong></a>
+              {% endif %}
             </div>
           </div>
         </div>
@@ -50,6 +54,24 @@
 
       {% endblock %}
     </section>
+    {% for message in messages %}
+      <script>
+        document.addEventListener('DOMContentLoaded', function () {
+          showToast('{{ message }}', 'is-{{ message.tags }}')
+        })
+      </script>
+    {% endfor %}
+    <script>
+      function showToast(message, type = 'is-danger') {
+        bulmaToast.toast({
+          message: message,
+          type: 'is-danger', // 'is-success', 'is-danger', 'is-warning', etc.
+          dismissible: false,
+          duration: 8000, // Duration in milliseconds
+          position: 'bottom-right' // Can also be 'top-right', 'top-left', 'bottom-right', etc.
+        })
+      }
+    </script>
     <script>
       document.addEventListener('DOMContentLoaded', () => {
         // Get all "navbar-burger" elements
