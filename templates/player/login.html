@@ -2,22 +2,32 @@
 {% load static %}
 
 {% block content %}
-  <form action="/player/login" method="post">
-    {% csrf_token %}
-    <div class="field">
-      <label class="label">API Key</label>
-      <div class="control">
-        <input id="api_key" name="api_key" class="input" type="text" placeholder="Text input" />
-      </div>
-      <p class="help">
-        If you don't have an API key you can generate one with limited access <a href="https://www.torn.com/preferences.php#tab=api?&step=addNewKey&title=TornBuddy&type=3" target="_blank">HERE</a>
-      </p>
-    </div>
+  <section class="hero is-primary is-fullheight">
+    <div class="hero-body">
+      <div class="container">
+        <div class="columns is-centered">
+          <div class="column is-5-tablet is-4-desktop is-3-widescreen">
+            <form action="/player/login" method="post" class="box">
+              {% csrf_token %}
+              <div class="field">
+                <label class="label">API Key</label>
+                <div class="control">
+                  <input id="api_key" name="api_key" class="input" type="text" placeholder="API KEY" />
+                </div>
+                <p class="help">
+                  If you don't have an API key you can generate one with limited access <a href="https://www.torn.com/preferences.php#tab=api?&step=addNewKey&title=TornBuddy&type=3" target="_blank">HERE</a>
+                </p>
+              </div>
 
-    <div class="field is-grouped">
-      <p class="control">
-        <button class="button is-primary">Submit</button>
-      </p>
+              <div class="field is-grouped">
+                <p class="control">
+                  <button class="button is-primary">Submit</button>
+                </p>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
     </div>
-  </form>
+  </section>
 {% endblock %}
