@@ -7,6 +7,10 @@ from TornBuddy.handy import apiCall, romanToInt, timestampToDatetime
 
 
 class NPC(models.Model):
+
+    def __str__(self):
+        return f"[{self.torn_id}] {self.name}"
+
     torn_id = models.IntegerField(unique=True)
     name = models.CharField(max_length=20, default="?")
     status = models.TextField(max_length=20, default="Ok")

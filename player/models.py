@@ -3,6 +3,10 @@ from django.db import models
 
 # Create your models here.
 class Player(models.Model):
+
+    def __str__(self):
+        return f"[{self.torn_id}] {self.name}"
+
     torn_id = models.IntegerField(unique=True)
     name = models.CharField()
     api_key = models.CharField()
@@ -77,6 +81,8 @@ class Player(models.Model):
         if self.valid_key:
             from dateutil import parser
 
+            from faction.models import Faction
+            from faction.tasks import faction_update_basic_info
             from TornBuddy.handy import apiCall
 
             response = apiCall("user", "", "", self.api_key)
@@ -114,6 +120,15 @@ class Player(models.Model):
             self.last_action_status = response["last_action"]["status"]
             self.last_action_timestap = response["last_action"]["timestamp"]
             self.last_action_relative = response["last_action"]["relative"]
+
+            if "faction" in response:
+                faction = Faction.objects.get_or_create(
+                    torn_id=response["faction"]["faction_id"]
+                )
+                faction[0].name = response["faction"]["faction_name"]
+                faction[0].save()
+                faction_update_basic_info(faction[0].torn_id)  # TODO: Background
+
             self.save()
             return self
         else:

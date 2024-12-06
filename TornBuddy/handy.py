@@ -1,6 +1,7 @@
 from datetime import datetime
 
 import requests
+from decouple import config
 from django.contrib import messages
 from django.core.cache import cache
 from django.shortcuts import redirect
@@ -138,6 +139,15 @@ def redirect_if_no_player(request):
         messages.error(request, "You must be logged in to continue")
         return redirect("/")
     return None
+
+
+def get_random_key():
+    player = Player.objects.filter(valid_key=True).order_by("?").first()
+    if player is not None:
+        key = player.api_key
+    else:
+        key = config("MASTER_KEY")
+    return key
 
 
 def romanToInt(s):

@@ -5,6 +5,10 @@ from player.models import Player
 
 # Create your models here.
 class Faction(models.Model):
+
+    def __str__(self):
+        return f"[{self.torn_id}] {self.name}"
+
     torn_id = models.IntegerField(null=False)
     name = models.CharField(null=True)
     tag = models.CharField(null=True)
