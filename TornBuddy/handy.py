@@ -1,7 +1,9 @@
 from datetime import datetime
 
 import requests
+from django.contrib import messages
 from django.core.cache import cache
+from django.shortcuts import redirect
 
 from player.models import Player
 
@@ -128,6 +130,14 @@ def apiCall(
 
 def timestampToDatetime(t):
     return datetime.fromtimestamp(t)
+
+
+def redirect_if_no_player(request):
+    player = get_player(request=request)
+    if player is None:
+        messages.error(request, "You must be logged in to continue")
+        return redirect("/")
+    return None
 
 
 def romanToInt(s):

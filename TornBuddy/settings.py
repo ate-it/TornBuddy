@@ -93,6 +93,7 @@ INSTALLED_APPS = [
     "loot",
     "api",
     "player",
+    "faction",
     "drf_yasg",
     "django_celery_beat",
 ]
