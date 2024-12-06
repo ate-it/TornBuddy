@@ -2,6 +2,7 @@ from decouple import config
 from django.db import models
 from django.utils import timezone
 
+from player.models import Player
 from TornBuddy.handy import apiCall, romanToInt, timestampToDatetime
 
 
@@ -25,7 +26,11 @@ class NPC(models.Model):
 
     def update(self):
         print(f"DEBUG: Updating loot for {self.name}")
-        key = config("MASTER_KEY")
+        player = Player.objects.filter(valid_key=True).order_by("?").first()
+        if player is not None:
+            key = player.api_key
+        else:
+            key = config("MASTER_KEY")
         req = apiCall("user", self.torn_id, "profile,timestamp", key=key)
 
         if "apiError" in req:
