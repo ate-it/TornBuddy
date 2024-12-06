@@ -6,26 +6,29 @@ class Player(models.Model):
     torn_id = models.IntegerField(unique=True)
     name = models.TextField()
     api_key = models.TextField()
-    level = models.IntegerField(default="0")
+    key_level = models.IntegerField(default=-1)
+    valid_key = models.BooleanField(default=False)
+
+    level = models.IntegerField(default=0)
     honor = models.TextField()
     gender = models.TextField()
     property = models.TextField()
     signup = models.IntegerField(null=True, default=28377016)
-    awards = models.IntegerField(default="0")
-    friends = models.IntegerField(default="0")
-    enemies = models.IntegerField(default="0")
-    forum_posts = models.IntegerField(default="0")
-    karma = models.IntegerField(default="0")
-    age = models.IntegerField(default="0")
+    awards = models.IntegerField(default=0)
+    friends = models.IntegerField(default=0)
+    enemies = models.IntegerField(default=0)
+    forum_posts = models.IntegerField(default=0)
+    karma = models.IntegerField(default=0)
+    age = models.IntegerField(default=0)
     role = models.TextField()
-    donator = models.IntegerField(default="0")
-    property_id = models.IntegerField(default="0")
-    revivable = models.IntegerField(default="0")
+    donator = models.IntegerField(default=0)
+    property_id = models.IntegerField(default=0)
+    revivable = models.IntegerField(default=0)
     profile_image = models.TextField()
-    life_current = models.IntegerField(default="0")
-    life_maximum = models.IntegerField(default="0")
-    life_increment = models.IntegerField(default="0")
-    life_interval = models.IntegerField(default="0")
+    life_current = models.IntegerField(default=0)
+    life_maximum = models.IntegerField(default=0)
+    life_increment = models.IntegerField(default=0)
+    life_interval = models.IntegerField(default=0)
     life_fulltime = models.IntegerField(null=True, default=28377016)
     status_description = models.TextField()
     status_details = models.TextField()
@@ -38,13 +41,45 @@ class Player(models.Model):
     last_action_timestap = models.IntegerField(null=True, default=28377016)
     last_action_relative = models.TextField()
 
-    def update_own_key(self):
+    def update_key_level(self):
+        from TornBuddy.handy import apiCall
 
+        # key levels
+        # -2: not valid key because of inactivity
+        # -1: key deleted because of major error
+        # 0: Unkown or custom key level
+        # 1: Public
+        # 2: Minimal
+        # 3: Limited
+        # 4: Full Access
+        key = self.api_key
+        data = apiCall("key", "", "info", key)
+        if not key:
+            self.key_level = -1
+            self.valid_key = False
+            self.save()
+            return
+
+        if "apiError" in data:
+            self.key_level = -1
+            self.valid_key = False
+            self.api_key = ""
+            self.save()
+            return
+
+        else:
+            self.key_level = data["access_level"]
+            self.valid_key = True
+            self.save()
+
+    def update_own_key(self):
+        self.update_key_level()
         from dateutil import parser
 
         from TornBuddy.handy import apiCall
 
         response = apiCall("user", "", "", self.api_key)
+
         self.name = response["name"]
         self.level = response["level"]
         self.honor = response["honor"]
