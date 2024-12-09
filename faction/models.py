@@ -1,10 +1,11 @@
 from django.db import models
 
 from player.models import Player
+from TornBuddy.models import TimeStampedModel
 
 
 # Create your models here.
-class Faction(models.Model):
+class Faction(TimeStampedModel):
 
     def __str__(self):
         return f"[{self.torn_id}] {self.name}"

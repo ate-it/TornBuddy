@@ -1,8 +1,10 @@
 from django.db import models
 
+from TornBuddy.models import TimeStampedModel
+
 
 # Create your models here.
-class Player(models.Model):
+class Player(TimeStampedModel):
 
     def __str__(self):
         return f"[{self.torn_id}] {self.name}"
