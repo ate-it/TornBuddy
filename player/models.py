@@ -127,7 +127,7 @@ class Player(models.Model):
                 )
                 faction[0].name = response["faction"]["faction_name"]
                 faction[0].save()
-                faction_update_basic_info(faction[0].torn_id)  # TODO: Background
+                faction_update_basic_info(faction[0].torn_id)  # TODO: Background?
 
             self.save()
             return self

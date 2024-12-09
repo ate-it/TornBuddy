@@ -1,0 +1,12 @@
+{% extends '_base.html' %}
+{% load static %}
+
+{% block content %}
+  <div class="container">
+   {% if not factions %}
+   No factions for you to join here, maybe you should <!-- TODO: Expand if no faction-->
+   {% else %}
+   list factions we have access to
+   {% endif %}
+  </div>
+{% endblock %}

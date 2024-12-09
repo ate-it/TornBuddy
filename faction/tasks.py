@@ -15,10 +15,16 @@ def faction_update_basic_info(faction_id):
     faction.name = response["basic"]["name"]
     faction.tag = response["basic"]["tag"]
     faction.tag_image = response["basic"]["tag_image"]
+
+    # TODO FIRST refactor leader and co leader logic below to new membership table
     player = Player.objects.get_or_create(torn_id=response["basic"]["leader_id"])[0]
     faction.leader = player
+    player.save()
     # TODO: Player -  update self or other in background
-    # TODO: Coleader - get_or_create and update self or other
+    # TODO: Coleader - update self or other in background
+    player = Player.objects.get_or_create(torn_id=response["basic"]["co-leader_id"])[0]
+    faction.co_leader = player
+    player.save()
 
     faction.respect = response["basic"]["respect"]
     faction.days_old = response["basic"]["days_old"]

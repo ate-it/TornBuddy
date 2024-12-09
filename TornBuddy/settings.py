@@ -77,7 +77,11 @@ def get_cache():
 
 CACHES = get_cache()
 
-
+INTERNAL_IPS = [
+    # ...
+    "127.0.0.1",
+    # ...
+]
 # Application definition
 
 INSTALLED_APPS = [
@@ -96,6 +100,7 @@ INSTALLED_APPS = [
     "faction",
     "drf_yasg",
     "django_celery_beat",
+    "debug_toolbar",
 ]
 SESSION_SAVE_EVERY_REQUEST = True
 MIDDLEWARE = [
@@ -106,6 +111,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
 ROOT_URLCONF = "TornBuddy.urls"
