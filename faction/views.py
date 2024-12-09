@@ -9,7 +9,8 @@ def index(request):
         return response
 
     player = get_player(request=request)
-    # factions = query to get factions to which player has access
+    # TODO: If player is a member of a faction, add it to the list
+    # TODO: If a player has been granted access to a faction, add it to the list
     factions = []
 
     context = {"factions": factions, "player": player}
