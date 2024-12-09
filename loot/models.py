@@ -1,9 +1,13 @@
+import logging
+
 from decouple import config
 from django.db import models
 from django.utils import timezone
 
 from player.models import Player
 from TornBuddy.handy import apiCall, romanToInt, timestampToDatetime
+
+logger = logging.getLogger("TornBuddy")
 
 
 class NPC(models.Model):
@@ -29,7 +33,7 @@ class NPC(models.Model):
         return self.status == "hospitalized"
 
     def update(self):
-        print(f"DEBUG: Updating loot for {self.name}")
+        logger.info(f"DEBUG: Updating loot for {self.name}")
         player = Player.objects.filter(valid_key=True).order_by("?").first()
         if player is not None:
             key = player.api_key

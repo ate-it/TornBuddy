@@ -1,18 +1,19 @@
 # tasks.py
 
+import logging
+
 from celery import shared_task
-from celery.utils.log import get_task_logger
 
 from loot.models import NPC
 
-logger = get_task_logger(__name__)
+logger = logging.getLogger("TornBuddy")
 
 
 @shared_task
 def update_loot_npc():
-    print("Debug: Starting Loot Update")
+    logger.info("Starting Loot Update")
     NPCs = NPC.objects.all()
     for npc in NPCs:
         npc.update()
-    print("Debug: Ending Loot Update")
+    logger.info("Ending Loot Update")
     return True

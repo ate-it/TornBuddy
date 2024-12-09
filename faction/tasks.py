@@ -31,6 +31,7 @@ def faction_update_basic_info(faction_id=-1):
             faction.add_member(leader, "Leader")
         # If the current leader is not the one from the API response, delete it and add the new leader
         elif faction.leader().player.torn_id != leader.torn_id:
+            # TODO: Move to model function
             ex_lead = faction.factionmember_set.filter(player=faction.leader().player)
             ex_lead.delete()
             faction.add_member(leader, "Leader")

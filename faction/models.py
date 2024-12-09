@@ -1,7 +1,11 @@
+import logging
+
 from django.db import models
 
 from player.models import Player
 from TornBuddy.models import TimeStampedModel
+
+logger = logging.getLogger("TornBuddy")
 
 
 # Create your models here.
@@ -34,6 +38,7 @@ class Faction(TimeStampedModel):
         return self.factionmember_set.filter(role="Co-Leader").first()
 
     def add_member(self, player, role, days_in_faction=0):
+        logging.info(f"Added {player.torn_id} to {self.torn_id} as {role}")
         member = FactionMember(
             faction=self, player=player, role=role, days_in_faction=days_in_faction
         )
