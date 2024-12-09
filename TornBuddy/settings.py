@@ -10,6 +10,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
+import os
+from datetime import datetime
 from pathlib import Path
 
 import sentry_sdk
@@ -19,7 +21,7 @@ from decouple import config
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
+os.makedirs(os.path.join(BASE_DIR, "logs"), exist_ok=True)
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
@@ -28,6 +30,41 @@ SECRET_KEY = config("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config("DEBUG", default=False, cast=bool)
+
+current_date = datetime.now().strftime("%Y-%m-%d")
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "verbose": {
+            "format": "{levelname} {asctime} {module} {message}",
+            "style": "{",
+        },
+    },
+    "handlers": {
+        "console": {
+            "level": "INFO",  # Only logs INFO and above
+            "class": "logging.StreamHandler",
+            "formatter": "verbose",
+        },
+        "file": {
+            "level": "INFO",  # Only logs INFO and above
+            "class": "logging.handlers.TimedRotatingFileHandler",
+            "formatter": "verbose",
+            "filename": os.path.join(BASE_DIR, "logs", f"django-{current_date}.log"),
+            "when": "midnight",
+            "backupCount": 30,
+        },
+    },
+    "loggers": {
+        "TornBuddy": {
+            "handlers": ["console", "file"],
+            "level": "INFO",  # Ignore DEBUG logs
+            "propagate": True,
+        },
+    },
+}
 
 ALLOWED_HOSTS = ["*"]
 CSRF_TRUSTED_ORIGINS = ["https://tornbuddy.com", "http://10.0.0.107:1337"]
@@ -77,7 +114,11 @@ def get_cache():
 
 CACHES = get_cache()
 
-
+INTERNAL_IPS = [
+    # ...
+    "127.0.0.1",
+    # ...
+]
 # Application definition
 
 INSTALLED_APPS = [
@@ -93,8 +134,10 @@ INSTALLED_APPS = [
     "loot",
     "api",
     "player",
+    "faction",
     "drf_yasg",
     "django_celery_beat",
+    "debug_toolbar",
 ]
 SESSION_SAVE_EVERY_REQUEST = True
 MIDDLEWARE = [
@@ -105,6 +148,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
 ROOT_URLCONF = "TornBuddy.urls"
@@ -177,7 +221,11 @@ USE_TZ = True
 CELERY_BEAT_SCHEDULE = {
     "Update_NPC_Loot": {
         "task": "loot.tasks.update_loot_npc",
-        "schedule": crontab(minute="*/5"),
+        "schedule": crontab(minute="*/15"),
+    },
+    "Update_Faction_Basic_Info": {
+        "task": "faction.tasks.faction_update_basic_info",
+        "schedule": crontab(minute=0, hour=8),
     },
 }
 # Static files (CSS, JavaScript, Images)

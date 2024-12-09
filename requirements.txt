@@ -17,6 +17,7 @@ cryptography==44.0.0
 distlib==0.3.9
 Django==5.1.4
 django-celery-beat==2.7.0
+django-debug-toolbar==4.4.6
 django-extensions==3.2.3
 django-filter==24.3
 django-probes==1.7.0

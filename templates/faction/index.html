@@ -1,0 +1,29 @@
+{% extends '_base.html' %}
+{% load static %}
+
+{% block content %}
+  <div class="container">
+   {% if not factions %}
+   No factions for you to join here, maybe you should <!-- TODO: Expand if no faction-->
+   {% else %}
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Torn ID</th>
+        <th>Faction</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for faction in factions%}
+      <tr>
+        <td>{{faction.torn_id}}</td>
+        <td>{{faction.name}}</td>
+        <td>View Link</td> <!-- TODO: View Link-->
+      </tr>
+       {% endfor %}
+    </tbody>
+  </table>
+   {% endif %}
+  </div>
+{% endblock %}

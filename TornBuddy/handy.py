@@ -1,7 +1,10 @@
 from datetime import datetime
 
 import requests
+from decouple import config
+from django.contrib import messages
 from django.core.cache import cache
+from django.shortcuts import redirect
 
 from player.models import Player
 
@@ -128,6 +131,23 @@ def apiCall(
 
 def timestampToDatetime(t):
     return datetime.fromtimestamp(t)
+
+
+def redirect_if_no_player(request):
+    player = get_player(request=request)
+    if player is None:
+        messages.error(request, "You must be logged in to continue")
+        return redirect("/")
+    return None
+
+
+def get_random_key():
+    player = Player.objects.filter(valid_key=True).order_by("?").first()
+    if player is not None:
+        key = player.api_key
+    else:
+        key = config("MASTER_KEY")
+    return key
 
 
 def romanToInt(s):
