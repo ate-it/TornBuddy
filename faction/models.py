@@ -26,9 +26,27 @@ class Faction(models.Model):
     rank_wins = models.IntegerField(default=-1)
     best_chain = models.IntegerField(default=-1)
 
+    def leader(self):
+        return self.factionmember_set.filter(role="Leader").first()
+
+    def co_leader(self):
+        return self.factionmember_set.filter(role="Co-Leader").first()
+
+    def add_member(self, player, role, days_in_faction=0):
+        member = FactionMember(
+            faction=self, player=player, role=role, days_in_faction=days_in_faction
+        )
+        member.save()
+
+    def delete_member(self, player):
+        print(2)
+
 
 class FactionMember(models.Model):
-    faction = models.OneToOneField(Faction, on_delete=models.CASCADE)
-    player = models.OneToOneField(Player, on_delete=models.CASCADE)
+    def __str__(self):
+        return f"[{self.faction.torn_id}] {self.faction.name} - [{self.player.torn_id}] {self.player.name} - {self.role}"
+
+    faction = models.ForeignKey(Faction, on_delete=models.CASCADE)
+    player = models.ForeignKey(Player, on_delete=models.CASCADE)
     role = models.CharField(null=True)
     days_in_faction = models.IntegerField(default=-1)

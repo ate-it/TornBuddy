@@ -16,15 +16,31 @@ def faction_update_basic_info(faction_id):
     faction.tag = response["basic"]["tag"]
     faction.tag_image = response["basic"]["tag_image"]
 
-    # TODO FIRST refactor leader and co leader logic below to new membership table
-    player = Player.objects.get_or_create(torn_id=response["basic"]["leader_id"])[0]
-    faction.leader = player
-    player.save()
+    leader = Player.objects.get_or_create(torn_id=response["basic"]["leader_id"])[0]
+    leader.save()
+    # If there is not a current leader, add the one from the api response
+    if not faction.leader():
+        faction.add_member(leader, "Leader")
+    # If the current leader is not the one from the API response, delete it and add the new leader
+    elif faction.leader().player.torn_id != leader.torn_id:
+        ex_lead = faction.factionmember_set.filter(player=faction.leader().player)
+        ex_lead.delete()
+        faction.add_member(leader, "Leader")
+
+    leader = Player.objects.get_or_create(torn_id=response["basic"]["co-leader_id"])[0]
+    leader.save()
+
+    # If there is not a current leader, add the one from the api response
+    if not faction.co_leader():
+        faction.add_member(leader, "Co-Leader")
+    # If the current leader is not the one from the API response, delete it and add the new leader
+    elif faction.co_leader().player.torn_id != leader.torn_id:
+        ex_lead = faction.factionmember_set.filter(player=faction.leader().player)
+        ex_lead.delete()
+        faction.add_member(leader, "Co-Leader")
+
     # TODO: Player -  update self or other in background
     # TODO: Coleader - update self or other in background
-    player = Player.objects.get_or_create(torn_id=response["basic"]["co-leader_id"])[0]
-    faction.co_leader = player
-    player.save()
 
     faction.respect = response["basic"]["respect"]
     faction.days_old = response["basic"]["days_old"]
