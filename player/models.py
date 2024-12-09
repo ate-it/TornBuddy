@@ -78,6 +78,10 @@ class Player(TimeStampedModel):
             self.valid_key = True
             self.save()
 
+    def can_access_faction(self, faction):
+        # TODO update with shared key when we build this function
+        return faction.factionmember_set.filter(player=self).exists()
+
     def update_own_key(self):
         self.update_key_level()
         if self.valid_key:
