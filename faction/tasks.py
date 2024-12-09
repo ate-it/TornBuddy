@@ -1,20 +1,23 @@
+import logging
+
 from celery import shared_task
-from celery.utils.log import get_task_logger
 
 from faction.models import Faction
 from player.models import Player
 from TornBuddy.handy import apiCall, get_random_key
 
-logger = get_task_logger(__name__)
+logger = logging.getLogger("TornBuddy")
 
 
 @shared_task
 def faction_update_basic_info(faction_id=-1):
     if faction_id == -1:
+        logger.info("Faction is -1, updating all factions")
         factions = Faction.objects.all()
         for faction in factions:
             faction_update_basic_info(faction.torn_id)
     else:
+        logger.info(f"Getting basic faction info for faction ID: {faction_id}")
         response = apiCall("faction", faction_id, "basic", get_random_key())
         faction = Faction.objects.get_or_create(torn_id=faction_id)[0]
         faction.name = response["basic"]["name"]
