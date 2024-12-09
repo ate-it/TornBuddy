@@ -186,6 +186,10 @@ CELERY_BEAT_SCHEDULE = {
         "task": "loot.tasks.update_loot_npc",
         "schedule": crontab(minute="*/15"),
     },
+    "Update_Faction_Basic_Info": {
+        "task": "faction.tasks.faction_update_basic_info",
+        "schedule": crontab(minute=0, hour=8),
+    },
 }
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
