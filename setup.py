@@ -1,9 +1,10 @@
+import logging
 import os
 
 import django
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "TornBuddy.settings")
-
+logger = logging.getLogger("TornBuddy")
 django.setup()
 from django.contrib.auth.models import User  # noqa: E402
 
@@ -16,11 +17,11 @@ cmd = "python manage.py migrate"
 r = os.system(cmd)
 
 
-print("create superuser")
+logger.info("create superuser")
 User.objects.create_superuser("admin", "admin@example.com", "adminpass")
 
 # NPC's
-print("Create NPC's")
+logger.info("Create NPC's")
 NPC.objects.create(torn_id=4, name="Duke", visible=True)  # Duke
 NPC.objects.create(torn_id=7, name="Amanda", visible=False)
 NPC.objects.create(torn_id=10, name="Scrooge", visible=False)  # Scrooge
@@ -30,8 +31,8 @@ NPC.objects.create(torn_id=19, name="Jimmy", visible=True)  # Jimmy
 NPC.objects.create(torn_id=20, name="Fernando", visible=True)  # Fernando
 NPC.objects.create(torn_id=21, name="Tiny", visible=True)  # Tiny
 
-print("Debug: Starting Loot Update")
+logger.info("Starting Loot Update")
 NPCs = NPC.objects.all()
 for npc in NPCs:
     npc.update()
-print("Debug: Ending Loot Update")
+logger.info("Ending Loot Update")

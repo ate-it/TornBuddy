@@ -33,7 +33,7 @@ class NPC(models.Model):
         return self.status == "hospitalized"
 
     def update(self):
-        logger.info(f"DEBUG: Updating loot for {self.name}")
+        logger.info(f"Updating loot for {self.name}")
         player = Player.objects.filter(valid_key=True).order_by("?").first()
         if player is not None:
             key = player.api_key
