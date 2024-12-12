@@ -39,7 +39,7 @@ def view_faction(request, faction_id):
         messages.error(request, "Now why are you poking around here?")
         return render(request, "dashboard/index.html")
     else:
-
+        # TODO: Update if not updated in x
         context = {"faction": faction, "player": player}
         return render(request, "faction/view.html", context)
 
