@@ -3,6 +3,7 @@ import logging
 from django.db import models
 
 from player.models import Player
+from TornBuddy.handy import apiCall
 from TornBuddy.models import TimeStampedModel
 
 logger = logging.getLogger("TornBuddy")
@@ -45,6 +46,24 @@ class Faction(TimeStampedModel):
         member.save()
 
     def delete_member(self, player):
+        print(2)
+
+    def update_members(self):
+        # Grab a key from any db_members_with_key
+        db_members = self.factionmember_set.filter(faction_id=self.id).all()
+        db_members_with_key = (
+            db_members.all().exclude(player__valid_key=False).order_by("?").first()
+        )
+        key = db_members_with_key.player.api_key
+
+        # Get a list of members from API
+        response = apiCall("faction", "", "members", key)
+        members = response["members"]
+        print(members)
+        # TODO if response contains members
+
+        # TODO: if there are members in the DB that are not in the API delete them
+        # TODO: get or update existing members
         print(2)
 
 

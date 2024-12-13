@@ -45,5 +45,18 @@ def view_faction(request, faction_id):
 
 
 def faction_members(request, faction_id):
-    # TODO: all of this
-    print(2)
+    response = redirect_if_no_player(request=request)
+    if response:
+        return response
+
+    player = get_player(request=request)
+    faction = Faction.objects.filter(torn_id=faction_id).first()
+
+    if not faction or not player.can_access_faction(faction):
+        messages.error(request, "Now why are you poking around here?")
+        return render(request, "dashboard/index.html")
+    else:
+        # TODO: only update members if it's been longer than x
+        members = faction.update_members()
+        context = {"faction": faction, "members": members, "player": player}
+        return render(request, "faction/view.html", context)
